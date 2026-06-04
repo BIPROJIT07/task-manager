@@ -11,7 +11,7 @@
   .login-box { background: white; padding: 40px; border-radius: 16px; width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
   .login-box h2 { text-align: center; margin-bottom: 8px; color: #1e3c72; font-size: 24px; }
   .login-box p { text-align: center; color: #888; margin-bottom: 28px; font-size: 14px; }
-  .login-box input { width: 100%; padding: 12px 16px; margin-bottom: 14px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; transition: border 0.2s; }
+  .login-box input { width: 100%; padding: 12px 16px; margin-bottom: 14px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
   .login-box input:focus { border-color: #2a5298; }
   .login-box button { width: 100%; padding: 13px; background: #2a5298; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600; }
   .login-box button:hover { background: #1e3c72; }
@@ -20,7 +20,6 @@
   .navbar { background: #1e3c72; color: white; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
   .navbar h1 { font-size: 18px; }
   .navbar-right { display: flex; align-items: center; gap: 16px; }
-  .navbar span { font-size: 14px; opacity: 0.85; }
   .logout-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 7px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
   .logout-btn:hover { background: rgba(255,255,255,0.3); }
   .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
@@ -35,7 +34,6 @@
   .stat-card .lbl { font-size: 13px; color: #888; margin-top: 4px; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .form-grid input, .form-grid select, .form-grid textarea { padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 14px; width: 100%; outline: none; }
-  .form-grid input:focus, .form-grid select:focus { border-color: #2a5298; }
   .full-width { grid-column: 1 / -1; }
   .btn { padding: 10px 22px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
   .btn-primary { background: #2a5298; color: white; }
@@ -60,10 +58,18 @@
   .task-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
   .task-actions select { padding: 7px 12px; border: 1.5px solid #ddd; border-radius: 7px; font-size: 13px; }
   .emp-form { display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 10px; align-items: end; }
-  .emp-form input, .emp-form select { padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 14px; }
+  .emp-form input { padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 14px; }
   .loading { text-align: center; padding: 40px; color: #888; }
   .success-msg { background: #eafaf1; color: #27ae60; padding: 10px 16px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; }
   .error-msg { background: #fdecea; color: #e74c3c; padding: 10px 16px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; }
+  .worklog-item { border-left: 4px solid #2a5298; padding: 12px 16px; margin-bottom: 10px; background: #f8f9fb; border-radius: 0 8px 8px 0; }
+  .worklog-item .wl-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .worklog-item .wl-title { font-weight: 600; color: #1e3c72; font-size: 14px; }
+  .worklog-item .wl-time { font-size: 12px; color: #888; }
+  .worklog-item .wl-desc { font-size: 13px; color: #555; }
+  .worklog-item .wl-emp { font-size: 12px; color: #2a5298; font-weight: 600; margin-bottom: 4px; }
+  .date-group { margin-bottom: 20px; }
+  .date-group .date-header { background: #1e3c72; color: white; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
   @media (max-width: 600px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .form-grid { grid-template-columns: 1fr; }
@@ -73,7 +79,6 @@
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
 <div id="loginPage">
   <div class="login-box">
     <h2>Task Manager</h2>
@@ -85,12 +90,11 @@
   </div>
 </div>
 
-<!-- MAIN APP -->
 <div id="appPage">
   <div class="navbar">
     <h1>Task Manager</h1>
     <div class="navbar-right">
-      <span id="navUserName"></span>
+      <span id="navUserName" style="font-size:14px;opacity:0.85"></span>
       <span id="navUserBadge" class="badge"></span>
       <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
@@ -102,6 +106,7 @@
     <div id="adminTabs" style="display:none">
       <div class="tabs">
         <button class="tab-btn active" onclick="showAdminTab('dashboard')">Dashboard</button>
+        <button class="tab-btn" onclick="showAdminTab('worklogs')">Daily Work Logs</button>
         <button class="tab-btn" onclick="showAdminTab('tasks')">All Tasks</button>
         <button class="tab-btn" onclick="showAdminTab('assign')">Assign Task</button>
         <button class="tab-btn" onclick="showAdminTab('employees')">Employees</button>
@@ -116,14 +121,29 @@
         </div>
       </div>
 
+      <!-- DAILY WORK LOGS - ADMIN VIEW -->
+      <div id="tab-worklogs" style="display:none">
+        <div class="card">
+          <h3>Employee Daily Work Logs</h3>
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+            <select id="wlFilterEmp" onchange="loadAdminWorklogs()" style="padding:8px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;">
+              <option value="">All Employees</option>
+            </select>
+            <input type="date" id="wlFilterDate" onchange="loadAdminWorklogs()" style="padding:8px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;" />
+            <button class="btn btn-primary" style="font-size:13px;padding:8px 16px;" onclick="clearWlFilter()">Show All</button>
+          </div>
+          <div id="adminWorklogsDiv"><div class="loading">Loading...</div></div>
+        </div>
+      </div>
+
       <div id="tab-tasks" style="display:none">
         <div class="card">
           <h3>All Employee Tasks</h3>
-          <div style="margin-bottom:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <select id="filterEmployee" onchange="loadAllTasks()" style="padding:8px 12px; border:1.5px solid #ddd; border-radius:7px; font-size:13px;">
+          <div style="margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;">
+            <select id="filterEmployee" onchange="loadAllTasks()" style="padding:8px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;">
               <option value="">All Employees</option>
             </select>
-            <select id="filterStatus" onchange="loadAllTasks()" style="padding:8px 12px; border:1.5px solid #ddd; border-radius:7px; font-size:13px;">
+            <select id="filterStatus" onchange="loadAllTasks()" style="padding:8px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;">
               <option value="">All Status</option>
               <option value="todo">To Do</option>
               <option value="in_progress">In Progress</option>
@@ -147,7 +167,7 @@
               <option value="low">Low Priority</option>
             </select>
             <input type="date" id="taskDeadline" />
-            <textarea id="taskDesc" class="full-width" placeholder="Task description..." rows="3" style="padding:10px 14px; border:1.5px solid #e0e0e0; border-radius:8px; font-size:14px; resize:vertical;"></textarea>
+            <textarea id="taskDesc" class="full-width" placeholder="Task description..." rows="3" style="padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;resize:vertical;"></textarea>
           </div>
           <button class="btn btn-primary" style="margin-top:14px;" onclick="assignTask()">Assign Task</button>
         </div>
@@ -183,13 +203,38 @@
     <div id="employeeTabs" style="display:none">
       <div class="tabs">
         <button class="tab-btn active" onclick="showEmpTab('mytasks')">My Tasks</button>
+        <button class="tab-btn" onclick="showEmpTab('worklog')">My Daily Work Log</button>
         <button class="tab-btn" onclick="showEmpTab('mylog')">My Activity</button>
       </div>
 
       <div id="tab-mytasks">
         <div class="card">
-          <h3>My Tasks</h3>
+          <h3>My Assigned Tasks</h3>
           <div id="myTasksDiv"><div class="loading">Loading...</div></div>
+        </div>
+      </div>
+
+      <!-- EMPLOYEE WORK LOG -->
+      <div id="tab-worklog" style="display:none">
+        <div class="card">
+          <h3>Add Today's Work</h3>
+          <div id="wlMsg"></div>
+          <div class="form-grid">
+            <input type="date" id="wlDate" />
+            <input type="text" id="wlTitle" placeholder="Work Title (e.g. Client Meeting)" />
+            <textarea id="wlDesc" class="full-width" placeholder="Describe what you did in detail..." rows="4" style="padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;resize:vertical;"></textarea>
+            <select id="wlStatus" style="padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;">
+              <option value="completed">Completed</option>
+              <option value="in_progress">In Progress</option>
+              <option value="pending">Pending</option>
+            </select>
+            <input type="text" id="wlHours" placeholder="Hours spent (e.g. 2.5)" />
+          </div>
+          <button class="btn btn-primary" style="margin-top:14px;" onclick="addWorklog()">Submit Work Log</button>
+        </div>
+        <div class="card">
+          <h3>My Work History</h3>
+          <div id="myWorklogsDiv"><div class="loading">Loading...</div></div>
         </div>
       </div>
 
@@ -207,7 +252,6 @@
 <script>
 const SUPABASE_URL = 'https://ybcthdnmcjqnmbfdjzuk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InliY3RoZG5tY2pxbm1iZmRqenVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0Njk2NTQsImV4cCI6MjA5NjA0NTY1NH0.Qv2VQFpOyFlEH2vKI2p_NG61jNImbm0F8m3COdelGA4';
-
 let currentUser = null;
 
 async function sb(path, method='GET', body=null) {
@@ -232,7 +276,7 @@ async function doLogin() {
   const pass = document.getElementById('loginPass').value.trim();
   if (!id || !pass) { document.getElementById('loginError').textContent = 'Please enter ID and Password'; return; }
   const users = await sb(`users?emp_id=eq.${id}&password=eq.${pass}`);
-  if (users.length === 0) { document.getElementById('loginError').textContent = 'Invalid ID or Password'; return; }
+  if (!users.length) { document.getElementById('loginError').textContent = 'Invalid ID or Password'; return; }
   currentUser = users[0];
   await sb('activity_log', 'POST', { emp_id: currentUser.emp_id, action: 'LOGIN', details: currentUser.name + ' logged in' });
   document.getElementById('loginPage').style.display = 'none';
@@ -243,11 +287,12 @@ async function doLogin() {
   badge.className = 'badge ' + (currentUser.role === 'admin' ? 'badge-admin' : 'badge-todo');
   if (currentUser.role === 'admin') {
     document.getElementById('adminTabs').style.display = 'block';
-    loadDashboard();
-    loadEmployeeDropdowns();
+    loadDashboard(); loadEmployeeDropdowns();
   } else {
     document.getElementById('employeeTabs').style.display = 'block';
-    loadMyTasks();
+    // set today's date
+    document.getElementById('wlDate').value = new Date().toISOString().split('T')[0];
+    loadMyTasks(); loadMyWorklogs();
   }
 }
 
@@ -263,8 +308,9 @@ function doLogout() {
 }
 
 function statusBadge(s) {
-  if (s==='done') return '<span class="badge badge-done">Done</span>';
+  if (s==='done'||s==='completed') return '<span class="badge badge-done">Done</span>';
   if (s==='in_progress') return '<span class="badge badge-progress">In Progress</span>';
+  if (s==='pending') return '<span class="badge badge-medium">Pending</span>';
   return '<span class="badge badge-todo">To Do</span>';
 }
 function priorityBadge(p) {
@@ -276,12 +322,13 @@ function fmtDate(d) { return d ? new Date(d).toLocaleDateString() : '-'; }
 function fmtDateTime(d) { return d ? new Date(d).toLocaleString() : '-'; }
 
 function showAdminTab(tab) {
-  ['dashboard','tasks','assign','employees','log'].forEach(t => {
+  ['dashboard','worklogs','tasks','assign','employees','log'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t===tab ? 'block' : 'none';
   });
   document.querySelectorAll('#adminTabs .tab-btn').forEach((b,i) => {
-    b.classList.toggle('active', ['dashboard','tasks','assign','employees','log'][i]===tab);
+    b.classList.toggle('active', ['dashboard','worklogs','tasks','assign','employees','log'][i]===tab);
   });
+  if (tab==='worklogs') loadAdminWorklogs();
   if (tab==='tasks') loadAllTasks();
   if (tab==='employees') loadEmployees();
   if (tab==='log') loadActivityLog();
@@ -289,17 +336,65 @@ function showAdminTab(tab) {
 
 async function loadDashboard() {
   const tasks = await sb('tasks?select=*');
-  const total = tasks.length;
-  const done = tasks.filter(t=>t.status==='done').length;
-  const inprog = tasks.filter(t=>t.status==='in_progress').length;
-  const todo = tasks.filter(t=>t.status==='todo').length;
+  const logs = await sb('work_logs?select=*&order=work_date.desc&limit=5');
+  const total = tasks.length, done = tasks.filter(t=>t.status==='done').length;
+  const inprog = tasks.filter(t=>t.status==='in_progress').length, todo = tasks.filter(t=>t.status==='todo').length;
   document.getElementById('statsGrid').innerHTML = `
     <div class="stat-card"><div class="num" style="color:#2a5298">${total}</div><div class="lbl">Total Tasks</div></div>
     <div class="stat-card"><div class="num" style="color:#27ae60">${done}</div><div class="lbl">Completed</div></div>
     <div class="stat-card"><div class="num" style="color:#f39c12">${inprog}</div><div class="lbl">In Progress</div></div>
     <div class="stat-card"><div class="num" style="color:#e74c3c">${todo}</div><div class="lbl">Pending</div></div>`;
-  const recent = tasks.sort((a,b)=>new Date(b.updated_at)-new Date(a.updated_at)).slice(0,10);
+  const recent = tasks.sort((a,b)=>new Date(b.updated_at)-new Date(a.updated_at)).slice(0,8);
   renderTaskTable(recent, 'recentTasksTable', false);
+}
+
+// ADMIN WORK LOGS
+async function loadAdminWorklogs() {
+  const emp = document.getElementById('wlFilterEmp').value;
+  const date = document.getElementById('wlFilterDate').value;
+  let q = 'work_logs?select=*&order=work_date.desc,created_at.desc';
+  if (emp) q += `&emp_id=eq.${emp}`;
+  if (date) q += `&work_date=eq.${date}`;
+  const logs = await sb(q);
+  const div = document.getElementById('adminWorklogsDiv');
+  if (!logs.length) { div.innerHTML = '<p style="color:#888;padding:20px">No work logs found</p>'; return; }
+
+  // group by date
+  const grouped = {};
+  logs.forEach(l => {
+    const d = l.work_date;
+    if (!grouped[d]) grouped[d] = [];
+    grouped[d].push(l);
+  });
+
+  let html = '';
+  Object.keys(grouped).sort((a,b)=>b.localeCompare(a)).forEach(date => {
+    html += `<div class="date-group"><div class="date-header">📅 ${new Date(date).toDateString()}</div>`;
+    grouped[date].forEach(l => {
+      html += `<div class="worklog-item">
+        <div class="wl-header">
+          <div>
+            <div class="wl-emp">👤 ${l.emp_id} ${l.emp_name ? '— '+l.emp_name : ''}</div>
+            <div class="wl-title">${l.title}</div>
+          </div>
+          <div style="text-align:right">
+            ${statusBadge(l.status)}
+            ${l.hours ? '<div style="font-size:12px;color:#888;margin-top:4px">⏱ '+l.hours+' hrs</div>' : ''}
+          </div>
+        </div>
+        <div class="wl-desc">${l.description || ''}</div>
+        <div style="font-size:11px;color:#aaa;margin-top:6px">Submitted: ${fmtDateTime(l.created_at)}</div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  div.innerHTML = html;
+}
+
+function clearWlFilter() {
+  document.getElementById('wlFilterEmp').value = '';
+  document.getElementById('wlFilterDate').value = '';
+  loadAdminWorklogs();
 }
 
 async function loadAllTasks() {
@@ -308,46 +403,37 @@ async function loadAllTasks() {
   let q = 'tasks?select=*&order=updated_at.desc';
   if (emp) q += `&assigned_to=eq.${emp}`;
   if (status) q += `&status=eq.${status}`;
-  const tasks = await sb(q);
-  renderTaskTable(tasks, 'allTasksTable', true);
+  renderTaskTable(await sb(q), 'allTasksTable', true);
 }
 
 function renderTaskTable(tasks, divId, showDelete) {
   if (!tasks.length) { document.getElementById(divId).innerHTML = '<p style="color:#888;padding:20px">No tasks found</p>'; return; }
-  let html = `<table><thead><tr><th>Task</th><th>Assigned To</th><th>Status</th><th>Priority</th><th>Deadline</th><th>Last Updated</th>${showDelete?'<th>Action</th>':''}</tr></thead><tbody>`;
+  let html = `<table><thead><tr><th>Task</th><th>Assigned To</th><th>Status</th><th>Priority</th><th>Deadline</th><th>Last Updated</th>${showDelete?'<th></th>':''}</tr></thead><tbody>`;
   tasks.forEach(t => {
     html += `<tr>
       <td><strong>${t.title}</strong>${t.description?'<br><small style="color:#888">'+t.description+'</small>':''}</td>
-      <td>${t.assigned_to}</td>
-      <td>${statusBadge(t.status)}</td>
-      <td>${priorityBadge(t.priority)}</td>
-      <td>${fmtDate(t.deadline)}</td>
-      <td>${fmtDateTime(t.updated_at)}</td>
+      <td>${t.assigned_to}</td><td>${statusBadge(t.status)}</td><td>${priorityBadge(t.priority)}</td>
+      <td>${fmtDate(t.deadline)}</td><td>${fmtDateTime(t.updated_at)}</td>
       ${showDelete?`<td><button class="btn btn-danger" onclick="deleteTask('${t.id}')">Delete</button></td>`:''}
     </tr>`;
   });
-  html += '</tbody></table>';
-  document.getElementById(divId).innerHTML = html;
+  document.getElementById(divId).innerHTML = html + '</tbody></table>';
 }
 
 async function deleteTask(id) {
   if (!confirm('Delete this task?')) return;
-  await fetch(SUPABASE_URL+'/rest/v1/tasks?id=eq.'+id, {
-    method:'DELETE',
-    headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-  });
+  await fetch(SUPABASE_URL+'/rest/v1/tasks?id=eq.'+id, { method:'DELETE', headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY} });
   loadAllTasks();
 }
 
 async function loadEmployeeDropdowns() {
   const emps = await sb('users?role=eq.employee&select=emp_id,name');
-  const sel1 = document.getElementById('taskEmployee');
-  const sel2 = document.getElementById('filterEmployee');
-  sel1.innerHTML = '<option value="">Select Employee *</option>';
-  sel2.innerHTML = '<option value="">All Employees</option>';
-  emps.forEach(e => {
-    sel1.innerHTML += `<option value="${e.emp_id}">${e.name} (${e.emp_id})</option>`;
-    sel2.innerHTML += `<option value="${e.emp_id}">${e.name}</option>`;
+  ['taskEmployee','filterEmployee','wlFilterEmp'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const def = id==='taskEmployee' ? '<option value="">Select Employee *</option>' : id==='filterEmployee' ? '<option value="">All Employees</option>' : '<option value="">All Employees</option>';
+    el.innerHTML = def;
+    emps.forEach(e => { el.innerHTML += `<option value="${e.emp_id}">${e.name} (${e.emp_id})</option>`; });
   });
 }
 
@@ -357,27 +443,21 @@ async function assignTask() {
   const priority = document.getElementById('taskPriority').value;
   const deadline = document.getElementById('taskDeadline').value;
   const desc = document.getElementById('taskDesc').value.trim();
-  if (!title || !to) { document.getElementById('assignMsg').innerHTML = '<div class="error-msg">Task title and Employee are required</div>'; return; }
-  await sb('tasks', 'POST', { title, description:desc, assigned_to:to, assigned_by:currentUser.emp_id, priority, deadline:deadline||null, status:'todo' });
-  await sb('activity_log', 'POST', { emp_id:currentUser.emp_id, action:'ASSIGN', details:`"${title}" assigned to ${to}` });
-  document.getElementById('assignMsg').innerHTML = '<div class="success-msg">Task assigned successfully!</div>';
-  document.getElementById('taskTitle').value='';
-  document.getElementById('taskDesc').value='';
-  document.getElementById('taskDeadline').value='';
-  setTimeout(()=>document.getElementById('assignMsg').innerHTML='', 3000);
+  if (!title||!to) { document.getElementById('assignMsg').innerHTML='<div class="error-msg">Task title and Employee are required</div>'; return; }
+  await sb('tasks','POST',{title,description:desc,assigned_to:to,assigned_by:currentUser.emp_id,priority,deadline:deadline||null,status:'todo'});
+  await sb('activity_log','POST',{emp_id:currentUser.emp_id,action:'ASSIGN',details:`"${title}" assigned to ${to}`});
+  document.getElementById('assignMsg').innerHTML='<div class="success-msg">Task assigned successfully!</div>';
+  document.getElementById('taskTitle').value=''; document.getElementById('taskDesc').value=''; document.getElementById('taskDeadline').value='';
+  setTimeout(()=>document.getElementById('assignMsg').innerHTML='',3000);
   loadDashboard();
 }
 
 async function loadEmployees() {
   const emps = await sb('users?role=eq.employee&order=name');
-  if (!emps.length) { document.getElementById('employeesTable').innerHTML = '<p style="color:#888;padding:20px">No employees yet</p>'; return; }
-  let html = '<table><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Action</th></tr></thead><tbody>';
-  emps.forEach(e => {
-    html += `<tr><td>${e.emp_id}</td><td>${e.name}</td><td>${e.department||'-'}</td>
-    <td><button class="btn btn-danger" onclick="deleteEmployee('${e.emp_id}')">Delete</button></td></tr>`;
-  });
-  html += '</tbody></table>';
-  document.getElementById('employeesTable').innerHTML = html;
+  if (!emps.length) { document.getElementById('employeesTable').innerHTML='<p style="color:#888;padding:20px">No employees yet</p>'; return; }
+  let html = '<table><thead><tr><th>ID</th><th>Name</th><th>Department</th><th></th></tr></thead><tbody>';
+  emps.forEach(e => { html += `<tr><td>${e.emp_id}</td><td>${e.name}</td><td>${e.department||'-'}</td><td><button class="btn btn-danger" onclick="deleteEmployee('${e.emp_id}')">Delete</button></td></tr>`; });
+  document.getElementById('employeesTable').innerHTML = html + '</tbody></table>';
 }
 
 async function addEmployee() {
@@ -386,63 +466,46 @@ async function addEmployee() {
   const department = document.getElementById('newEmpDept').value.trim();
   const password = document.getElementById('newEmpPass').value.trim();
   if (!emp_id||!name||!password) { document.getElementById('empMsg').innerHTML='<div class="error-msg">ID, Name and Password are required</div>'; return; }
-  const res = await sb('users', 'POST', {emp_id, name, password, role:'employee', department});
-  if (res && res.length) {
+  const res = await sb('users','POST',{emp_id,name,password,role:'employee',department});
+  if (res&&res.length) {
     document.getElementById('empMsg').innerHTML='<div class="success-msg">Employee added successfully!</div>';
-    document.getElementById('newEmpId').value='';
-    document.getElementById('newEmpName').value='';
-    document.getElementById('newEmpDept').value='';
-    document.getElementById('newEmpPass').value='';
-    loadEmployees();
-    loadEmployeeDropdowns();
-    setTimeout(()=>document.getElementById('empMsg').innerHTML='', 3000);
-  } else {
-    document.getElementById('empMsg').innerHTML='<div class="error-msg">Error! This Employee ID may already exist.</div>';
-  }
+    ['newEmpId','newEmpName','newEmpDept','newEmpPass'].forEach(id=>document.getElementById(id).value='');
+    loadEmployees(); loadEmployeeDropdowns();
+    setTimeout(()=>document.getElementById('empMsg').innerHTML='',3000);
+  } else { document.getElementById('empMsg').innerHTML='<div class="error-msg">Error! This ID may already exist.</div>'; }
 }
 
 async function deleteEmployee(emp_id) {
-  if (!confirm('Delete employee ' + emp_id + '?')) return;
-  await fetch(SUPABASE_URL+'/rest/v1/users?emp_id=eq.'+emp_id, {
-    method:'DELETE',
-    headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-  });
+  if (!confirm('Delete employee '+emp_id+'?')) return;
+  await fetch(SUPABASE_URL+'/rest/v1/users?emp_id=eq.'+emp_id,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
   loadEmployees();
 }
 
 async function loadActivityLog() {
   const logs = await sb('activity_log?order=created_at.desc&limit=100');
   if (!logs.length) { document.getElementById('activityLogTable').innerHTML='<p style="color:#888;padding:20px">No activity yet</p>'; return; }
-  let html = '<table><thead><tr><th>Time</th><th>Employee</th><th>Action</th><th>Details</th></tr></thead><tbody>';
-  logs.forEach(l => {
-    html += `<tr><td>${fmtDateTime(l.created_at)}</td><td>${l.emp_id}</td><td><span class="badge badge-todo">${l.action}</span></td><td>${l.details}</td></tr>`;
-  });
-  html += '</tbody></table>';
-  document.getElementById('activityLogTable').innerHTML = html;
+  let html='<table><thead><tr><th>Time</th><th>Employee</th><th>Action</th><th>Details</th></tr></thead><tbody>';
+  logs.forEach(l=>{ html+=`<tr><td>${fmtDateTime(l.created_at)}</td><td>${l.emp_id}</td><td><span class="badge badge-todo">${l.action}</span></td><td>${l.details}</td></tr>`; });
+  document.getElementById('activityLogTable').innerHTML = html+'</tbody></table>';
 }
 
+// EMPLOYEE
 function showEmpTab(tab) {
-  ['mytasks','mylog'].forEach(t => {
-    document.getElementById('tab-'+t).style.display = t===tab ? 'block' : 'none';
-  });
-  document.querySelectorAll('#employeeTabs .tab-btn').forEach((b,i) => {
-    b.classList.toggle('active', ['mytasks','mylog'][i]===tab);
-  });
+  ['mytasks','worklog','mylog'].forEach(t=>{ document.getElementById('tab-'+t).style.display=t===tab?'block':'none'; });
+  document.querySelectorAll('#employeeTabs .tab-btn').forEach((b,i)=>{ b.classList.toggle('active',['mytasks','worklog','mylog'][i]===tab); });
   if (tab==='mylog') loadMyLog();
+  if (tab==='worklog') loadMyWorklogs();
 }
 
 async function loadMyTasks() {
   const tasks = await sb(`tasks?assigned_to=eq.${currentUser.emp_id}&order=created_at.desc`);
   const div = document.getElementById('myTasksDiv');
   if (!tasks.length) { div.innerHTML='<p style="color:#888;padding:20px">No tasks assigned yet</p>'; return; }
-  let html = '';
-  tasks.forEach(t => {
-    html += `<div class="task-item">
+  let html='';
+  tasks.forEach(t=>{
+    html+=`<div class="task-item">
       <h4>${t.title}</h4>
-      <div class="task-meta">
-        ${t.description ? t.description + '<br>' : ''}
-        ${priorityBadge(t.priority)} &nbsp;|&nbsp; Deadline: ${fmtDate(t.deadline)} &nbsp;|&nbsp; Last updated: ${fmtDateTime(t.updated_at)}
-      </div>
+      <div class="task-meta">${t.description?t.description+'<br>':''}${priorityBadge(t.priority)} &nbsp;|&nbsp; Deadline: ${fmtDate(t.deadline)} &nbsp;|&nbsp; Updated: ${fmtDateTime(t.updated_at)}</div>
       <div class="task-actions">
         ${statusBadge(t.status)}
         <select id="status_${t.id}">
@@ -450,7 +513,7 @@ async function loadMyTasks() {
           <option value="in_progress" ${t.status==='in_progress'?'selected':''}>In Progress</option>
           <option value="done" ${t.status==='done'?'selected':''}>Done</option>
         </select>
-        <input type="text" id="note_${t.id}" placeholder="Add a note..." value="${t.notes||''}" style="flex:1;padding:7px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;min-width:180px;" />
+        <input type="text" id="note_${t.id}" placeholder="Add a note..." value="${t.notes||''}" style="flex:1;padding:7px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;min-width:150px;" />
         <button class="btn btn-primary" onclick="updateTask('${t.id}')">Update</button>
       </div>
     </div>`;
@@ -461,29 +524,56 @@ async function loadMyTasks() {
 async function updateTask(id) {
   const status = document.getElementById('status_'+id).value;
   const notes = document.getElementById('note_'+id).value;
-  await fetch(SUPABASE_URL+'/rest/v1/tasks?id=eq.'+id, {
-    method:'PATCH',
-    headers:{
-      'apikey':SUPABASE_KEY,
-      'Authorization':'Bearer '+SUPABASE_KEY,
-      'Content-Type':'application/json'
-    },
-    body: JSON.stringify({status, notes, updated_at: new Date().toISOString()})
-  });
-  await sb('activity_log','POST',{emp_id:currentUser.emp_id, action:'UPDATE', details:`Task updated to "${status}". Note: ${notes}`});
+  await fetch(SUPABASE_URL+'/rest/v1/tasks?id=eq.'+id,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({status,notes,updated_at:new Date().toISOString()})});
+  await sb('activity_log','POST',{emp_id:currentUser.emp_id,action:'TASK UPDATE',details:`Task updated to "${status}". Note: ${notes}`});
   alert('Task updated successfully!');
   loadMyTasks();
+}
+
+// WORK LOG
+async function addWorklog() {
+  const work_date = document.getElementById('wlDate').value;
+  const title = document.getElementById('wlTitle').value.trim();
+  const description = document.getElementById('wlDesc').value.trim();
+  const status = document.getElementById('wlStatus').value;
+  const hours = document.getElementById('wlHours').value.trim();
+  if (!work_date||!title) { document.getElementById('wlMsg').innerHTML='<div class="error-msg">Date and Work Title are required</div>'; return; }
+  const res = await sb('work_logs','POST',{emp_id:currentUser.emp_id, emp_name:currentUser.name, work_date, title, description, status, hours:hours||null});
+  if (res&&res.length) {
+    document.getElementById('wlMsg').innerHTML='<div class="success-msg">Work log submitted successfully!</div>';
+    document.getElementById('wlTitle').value=''; document.getElementById('wlDesc').value=''; document.getElementById('wlHours').value='';
+    setTimeout(()=>document.getElementById('wlMsg').innerHTML='',3000);
+    await sb('activity_log','POST',{emp_id:currentUser.emp_id,action:'WORK LOG',details:`Added work log: "${title}" for ${work_date}`});
+    loadMyWorklogs();
+  } else { document.getElementById('wlMsg').innerHTML='<div class="error-msg">Error submitting work log</div>'; }
+}
+
+async function loadMyWorklogs() {
+  const logs = await sb(`work_logs?emp_id=eq.${currentUser.emp_id}&order=work_date.desc,created_at.desc`);
+  const div = document.getElementById('myWorklogsDiv');
+  if (!logs.length) { div.innerHTML='<p style="color:#888;padding:20px">No work logs yet</p>'; return; }
+  const grouped={};
+  logs.forEach(l=>{ if(!grouped[l.work_date]) grouped[l.work_date]=[]; grouped[l.work_date].push(l); });
+  let html='';
+  Object.keys(grouped).sort((a,b)=>b.localeCompare(a)).forEach(date=>{
+    html+=`<div class="date-group"><div class="date-header">📅 ${new Date(date).toDateString()}</div>`;
+    grouped[date].forEach(l=>{
+      html+=`<div class="worklog-item">
+        <div class="wl-header"><div class="wl-title">${l.title}</div><div>${statusBadge(l.status)}${l.hours?'<div style="font-size:12px;color:#888;margin-top:4px">⏱ '+l.hours+' hrs</div>':''}</div></div>
+        <div class="wl-desc">${l.description||''}</div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  div.innerHTML=html;
 }
 
 async function loadMyLog() {
   const logs = await sb(`activity_log?emp_id=eq.${currentUser.emp_id}&order=created_at.desc&limit=50`);
   if (!logs.length) { document.getElementById('myLogDiv').innerHTML='<p style="color:#888;padding:20px">No activity yet</p>'; return; }
-  let html = '<table><thead><tr><th>Time</th><th>Action</th><th>Details</th></tr></thead><tbody>';
-  logs.forEach(l => {
-    html += `<tr><td>${fmtDateTime(l.created_at)}</td><td><span class="badge badge-todo">${l.action}</span></td><td>${l.details}</td></tr>`;
-  });
-  html += '</tbody></table>';
-  document.getElementById('myLogDiv').innerHTML = html;
+  let html='<table><thead><tr><th>Time</th><th>Action</th><th>Details</th></tr></thead><tbody>';
+  logs.forEach(l=>{ html+=`<tr><td>${fmtDateTime(l.created_at)}</td><td><span class="badge badge-todo">${l.action}</span></td><td>${l.details}</td></tr>`; });
+  document.getElementById('myLogDiv').innerHTML=html+'</tbody></table>';
 }
 </script>
 </body>
