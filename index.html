@@ -501,23 +501,47 @@ async function loadMyTasks() {
   const tasks = await sb(`tasks?assigned_to=eq.${currentUser.emp_id}&order=created_at.desc`);
   const div = document.getElementById('myTasksDiv');
   if (!tasks.length) { div.innerHTML='<p style="color:#888;padding:20px">No tasks assigned yet</p>'; return; }
-  let html='';
-  tasks.forEach(t=>{
-    html+=`<div class="task-item">
-      <h4>${t.title}</h4>
-      <div class="task-meta">${t.description?t.description+'<br>':''}${priorityBadge(t.priority)} &nbsp;|&nbsp; Deadline: ${fmtDate(t.deadline)} &nbsp;|&nbsp; Updated: ${fmtDateTime(t.updated_at)}</div>
-      <div class="task-actions">
-        ${statusBadge(t.status)}
-        <select id="status_${t.id}">
-          <option value="todo" ${t.status==='todo'?'selected':''}>To Do</option>
-          <option value="in_progress" ${t.status==='in_progress'?'selected':''}>In Progress</option>
-          <option value="done" ${t.status==='done'?'selected':''}>Done</option>
-        </select>
-        <input type="text" id="note_${t.id}" placeholder="Add a note..." value="${t.notes||''}" style="flex:1;padding:7px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;min-width:150px;" />
-        <button class="btn btn-primary" onclick="updateTask('${t.id}')">Update</button>
-      </div>
-    </div>`;
-  });
+  
+  const active = tasks.filter(t => t.status !== 'done');
+  const done = tasks.filter(t => t.status === 'done');
+  
+  let html = '';
+  
+  // ACTIVE TASKS
+  if (active.length) {
+    html += '<h4 style="color:#1e3c72;margin-bottom:12px;">Active Tasks ('+active.length+')</h4>';
+    active.forEach(t => {
+      html+=`<div class="task-item">
+        <h4>${t.title}</h4>
+        <div class="task-meta">${t.description?t.description+'<br>':''}${priorityBadge(t.priority)} &nbsp;|&nbsp; Deadline: ${fmtDate(t.deadline)} &nbsp;|&nbsp; Updated: ${fmtDateTime(t.updated_at)}</div>
+        <div class="task-actions">
+          ${statusBadge(t.status)}
+          <select id="status_${t.id}">
+            <option value="todo" ${t.status==='todo'?'selected':''}>To Do</option>
+            <option value="in_progress" ${t.status==='in_progress'?'selected':''}>In Progress</option>
+            <option value="done" ${t.status==='done'?'selected':''}>Done</option>
+          </select>
+          <input type="text" id="note_${t.id}" placeholder="Add a note..." value="${t.notes||''}" style="flex:1;padding:7px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;min-width:150px;" />
+          <button class="btn btn-primary" onclick="updateTask('${t.id}')">Update</button>
+        </div>
+      </div>`;
+    });
+  } else {
+    html += '<p style="color:#27ae60;padding:10px;background:#eafaf1;border-radius:8px;margin-bottom:16px;">All tasks completed!</p>';
+  }
+  
+  // DONE TASKS
+  if (done.length) {
+    html += '<details style="margin-top:16px;"><summary style="cursor:pointer;padding:10px 16px;background:#eafaf1;border-radius:8px;color:#27ae60;font-weight:600;">Completed Tasks ('+done.length+') — click to view</summary><div style="margin-top:10px;">';
+    done.forEach(t => {
+      html+=`<div class="task-item" style="opacity:0.7;border-color:#c8e6c9;">
+        <h4 style="text-decoration:line-through;color:#888;">${t.title}</h4>
+        <div class="task-meta">${priorityBadge(t.priority)} &nbsp;|&nbsp; Completed: ${fmtDateTime(t.updated_at)} ${t.notes?'&nbsp;|&nbsp; Note: '+t.notes:''}</div>
+      </div>`;
+    });
+    html += '</div></details>';
+  }
+  
   div.innerHTML = html;
 }
 
